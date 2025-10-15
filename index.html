@@ -1,13 +1,274 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>10 Earth Science Database</title>
+  <meta charset="UTF-8">
+  <title>Year 10 Earth Science Game Hub</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root {
+      --earth-brown: #a0522d;
+      --earth-green: #3e7d48;
+      --earth-blue: #1e3d59;
+      --rock-grey: #999999;
+      --tectonic-red: #c1440e;
+      --moon-white: #f8f8ff;
+      --star-yellow: #ffe066;
+      --orbit-blue: #5dade2;
+      --season-orange: #f7b32b;
+      --shadow: 0 2px 12px #1e3d5933;
+    }
+    body {
+      margin: 0;
+      font-family: 'Courier New', Courier, monospace;
+      background: linear-gradient(135deg, var(--earth-blue) 40%, var(--earth-green) 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+      color: #f8f8ff;
+    }
+    .bg-svg {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.9;
+    }
+    header {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      padding: 3rem 1rem 1rem 1rem;
+      background: rgba(30, 61, 89, 0.85);
+      border-bottom: 2px solid var(--earth-brown);
+      box-shadow: var(--shadow);
+      margin-bottom: 1rem;
+    }
+    .hero-title {
+      font-size: 3.3rem; /* Increased by 10% */
+      font-weight: bold;  /* Make bold */
+      letter-spacing: 1px;
+      color: var(--star-yellow);
+      margin-bottom: 0.2em;
+      text-shadow: 0 2px 12px #1e3d59, 0 0 8px #ffe06688;
+      animation: highlight-glow 2.5s infinite alternate;
+    }
+    @keyframes highlight-glow {
+      0% { text-shadow: 0 2px 12px #1e3d59, 0 0 8px #ffe06688; }
+      100% { text-shadow: 0 2px 24px #1e3d59, 0 0 24px #ffe066; }
+    }
+    .hero-sub {
+      font-size: 1.35rem;
+      color: var(--moon-white);
+      margin-bottom: 1.2em;
+      text-shadow: 0 1px 8px #3e7d48;
+      font-weight: 500;
+      letter-spacing: 1px;
+      animation: fade-in 1.5s;
+    }
+    @keyframes fade-in {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    main {
+      position: relative;
+      z-index: 2;
+      padding: 1.6rem 2vw 3rem 2vw;
+      max-width: 980px;
+      margin: 0 auto;
+    }
+    .game-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 2rem;
+      margin-top: 1.8rem;
+    }
+    .game-card {
+      background: linear-gradient(120deg, var(--earth-green) 60%, var(--earth-brown) 100%);
+      border-radius: 22px;
+      box-shadow: 0 3px 18px #a0522d44;
+      padding: 1.5em 1.1em 1.1em 1.1em;
+      display: flex;
+      flex-direction: column;
+      align-items: start;
+      transition: transform 0.18s, box-shadow 0.18s, background 0.18s;
+      border: 3px solid var(--rock-grey);
+      position: relative;
+      overflow: hidden;
+    }
+    .game-card:hover {
+      transform: translateY(-5px) scale(1.04);
+      box-shadow: 0 8px 32px #1e3d5955;
+      background: linear-gradient(120deg, var(--star-yellow) 60%, var(--orbit-blue) 100%);
+      border-color: var(--star-yellow);
+    }
+    .game-title {
+      font-size: 1.45rem;
+      font-weight: bold;
+      color: var(--star-yellow);
+      margin-bottom: 0.5em;
+      text-shadow: 0 2px 8px #a0522d;
+      letter-spacing: 0.5px;
+    }
+    .game-desc {
+      font-size: 1.09rem;
+      color: var(--moon-white);
+      margin-bottom: 1.1em;
+      font-weight: 500;
+    }
+    .game-link {
+      display: inline-block;
+      background: var(--orbit-blue);
+      color: var(--moon-white);
+      text-decoration: none;
+      padding: 0.7em 1.35em;
+      border-radius: 14px;
+      font-weight: 700;
+      font-size: 1.15rem;
+      box-shadow: 0 2px 8px #5dade2cc;
+      transition: background 0.19s, color 0.19s;
+      border: none;
+      cursor: pointer;
+      letter-spacing: 0.5px;
+    }
+    .game-link:hover {
+      background: var(--star-yellow);
+      color: var(--earth-blue);
+      box-shadow: 0 2px 18px #ffe066aa;
+    }
+    .new-badge {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      background: var(--season-orange);
+      color: var(--moon-white);
+      font-size: 0.97rem;
+      font-weight: 700;
+      border-radius: 10px;
+      padding: 0.3em 0.7em;
+      box-shadow: 0 2px 8px #f7b32b88;
+      letter-spacing: 1px;
+      animation: badge-pop 1.2s infinite alternate;
+    }
+    @keyframes badge-pop {
+      from { transform: scale(1); box-shadow: 0 2px 8px #f7b32b88; }
+      to { transform: scale(1.12); box-shadow: 0 0 20px #ffe06688; }
+    }
+    .content-theme {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.1rem;
+      margin: 2.2rem auto 0.8rem auto;
+      z-index: 2;
+      position: relative;
+    }
+    .theme-tag {
+      background: linear-gradient(90deg, var(--earth-green) 60%, var(--earth-brown) 100%);
+      color: var(--moon-white);
+      border-radius: 24px;
+      padding: 0.6em 1.3em 0.6em 0.7em;
+      font-size: 1.05rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      box-shadow: 0 3px 18px #3e7d4855;
+      border: 2px solid var(--star-yellow);
+      user-select: none;
+      display: flex;
+      align-items: center;
+      gap: 0.4em;
+      transition: none;
+      font-family: 'Courier New', Courier, monospace;
+    }
+    .theme-tag:hover {
+      background: linear-gradient(90deg, var(--earth-green) 60%, var(--earth-brown) 100%);
+      color: var(--moon-white);
+    }
+    .theme-icon {
+      font-size: 1.3em;
+      filter: drop-shadow(0 0 2px #ffe066);
+    }
+    footer {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      color: #cfd8dc;
+      font-size: 1.1rem;
+      padding: 2.5rem 0 1.2rem 0;
+      background: rgba(30,61,89,0.8);
+      box-shadow: var(--shadow);
+      margin-top: 1rem;
+      border-top: 2px solid var(--rock-grey);
+    }
+    @media (max-width: 680px) {
+      header .hero-title { font-size: 2.2rem; }
+      .game-card { font-size: 0.95rem; }
+      .theme-tag { font-size: 0.85rem; }
+      .content-theme { gap: 0.6rem; }
+      .game-list { grid-template-columns: 1fr; }
+      main { padding: 0.8rem 1vw 2rem 1vw; }
+    }
+  </style>
 </head>
 <body>
-    <h1>Welcome to the 10 Earth Science Database</h1>
-    <p>Check out the Science Categorizer game <a href="https://socialsciencestod.my.canva.site/tetris-style-categorization-game-design-outline">here</a>.</p>
-    <!-- Other content -->
+  <div class="bg-svg" aria-hidden="true">
+    <svg width="100%" height="100%" viewBox="0 0 1440 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <g opacity="0.19">
+        <path d="M0,100 Q100,150 200,100 T400,100 T800,200 T1200,180 T1440,220 V800 H0 Z" fill="#a0522d"/>
+        <path d="M0,230 Q220,180 440,320 T900,320 T1370,300 T1440,320 V800 H0 Z" fill="#6e665c"/>
+        <ellipse cx="1200" cy="160" rx="55" ry="55" fill="#ffe066"/>
+        <ellipse cx="380" cy="100" rx="38" ry="38" fill="#5dade2"/>
+        <rect x="45" y="480" width="210" height="16" fill="#c1440e" rx="8"/>
+        <ellipse cx="1150" cy="540" rx="100" ry="30" fill="#f7b32b"/>
+        <ellipse cx="650" cy="270" rx="80" ry="22" fill="#999999"/>
+        <ellipse cx="1400" cy="100" rx="18" ry="18" fill="#f8f8ff"/>
+        <rect x="490" y="640" width="180" height="12" fill="#ffe066" rx="6"/>
+        <circle cx="1260" cy="90" r="14" fill="#ffe066" opacity="0.7"/>
+        <circle cx="1300" cy="90" r="14" fill="#1e3d59" opacity="0.7"/>
+        <ellipse cx="900" cy="140" rx="70" ry="8" fill="#5dade2" opacity="0.7"/>
+        <circle cx="200" cy="60" r="3" fill="#ffe066"/>
+        <circle cx="300" cy="40" r="2" fill="#fff"/>
+        <circle cx="1000" cy="60" r="3" fill="#ffe066"/>
+        <circle cx="800" cy="30" r="2.5" fill="#fff"/>
+      </g>
+    </svg>
+  </div>
+  <header>
+    <div class="hero-title">Year 10 Earth Science<br>Game Hub</div>
+    <div class="hero-sub">
+      Level up your Earth Science skills with interactive games and quizzes!<br>
+      Explore, play, and discover the wonders of our planet and beyond.
+    </div>
+  </header>
+  <main>
+    <section>
+      <div class="game-list">
+        <div class="game-card">
+          <div class="new-badge">NEW!</div>
+          <div class="game-title">Science Categorizer</div>
+          <div class="game-desc">
+            A fast-paced game that combines the excitement of Tetris with science learning! Drag falling words into the correct category before they pile up. What will your high score be?
+          </div>
+          <a class="game-link" href="https://socialsciencestod.my.canva.site/tetris-style-categorization-game-design-outline" target="_blank" rel="noopener">Play Game</a>
+        </div>
+        <!-- Add more game cards here as you expand the hub! -->
+      </div>
+    </section>
+  </main>
+  <div class="content-theme">
+    <span class="theme-tag"><span class="theme-icon">🌍</span>Structure of the Earth</span>
+    <span class="theme-tag"><span class="theme-icon">🌋</span>Tectonics & Faultlines</span>
+    <span class="theme-tag"><span class="theme-icon">🪨</span>The Rock Cycle</span>
+    <span class="theme-tag"><span class="theme-icon">🧑‍🔬</span>Identifying Rocks</span>
+    <span class="theme-tag"><span class="theme-icon">🌊</span>Geology of Te Arawa</span>
+    <span class="theme-tag"><span class="theme-icon">🪐</span>Our Solar System</span>
+    <span class="theme-tag"><span class="theme-icon">🌞</span>Orbits, Seasons & Tides</span>
+    <span class="theme-tag"><span class="theme-icon">🌗</span>Phases of the Moon</span>
+    <span class="theme-tag"><span class="theme-icon">✨</span>Navigation by the Stars</span>
+  </div>
+  <footer>
+    &copy; 2025 Year 10 Earth Science Hub. Designed by nmckenzie17-cmyk.<br>
+    Educational resources &mdash; Links open in a new tab.<br>
+    <span style="font-size:1.3em;">🌏🌖✨🪨</span>
+  </footer>
 </body>
 </html>
